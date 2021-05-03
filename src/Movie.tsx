@@ -1,9 +1,16 @@
 import React from "react";
 
-type MovieType = {
-    name: string
-}
 
-export const Movie = (props: MovieType) => {
-    return <li>{props.name}</li>
+
+// @ts-ignore
+export const Movie = ({movie, config}) => {
+    return (<li>
+
+        {config.images?.base_url &&
+        <img src={` ${config.images.base_url}w342${movie.poster_path} `} alt={movie.title + 'Poster'}/>}
+
+        <h3>
+            {movie.title}
+        </h3>
+    </li>)
 }
