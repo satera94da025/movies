@@ -42,9 +42,9 @@ export const MoviesList = () => {
     return (<div>
         <Filter filter={filter} setFilter={setFilter}/>
         <ul className={'movies-list'}>
-            {movies.filter((movie: any) =>
+            {movies.filter((movie: {title: string}) =>
                 movie.title.toLowerCase().includes(filter.toLowerCase())
-            ).map((movie: any) =>
+            ).map((movie: {poster_path: string, id: number}) =>
                 <Movie key={movie.id} movie={movie} config={config}/>
             )}
         </ul>
