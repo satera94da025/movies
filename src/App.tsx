@@ -9,14 +9,13 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <Switch>
-                    <Route exact path={'/'}>
-                        <MoviesList/>
-                    </Route>
                     <Route path={'/movie/:id'}>
                         <MovieDetails/>
                     </Route>
+                    <Route exact path={'/movies'}>
+                        <MoviesList/>
+                    </Route>
                 </Switch>
-                {/*<Accordion/>*/}
             </BrowserRouter>
 
         </div>
