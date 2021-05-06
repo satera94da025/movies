@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Movie} from "./Movie";
 import {Filter} from "./Filter";
+import {movieApi} from "./api/movieApi";
+
+
 
 export const MoviesList = () => {
 
@@ -8,26 +11,22 @@ export const MoviesList = () => {
     const [movies, setMovies] = useState([])
     const [config, setConfig] = useState({})
 
-    const API = 'https://api.themoviedb.org/3/discover/movie?api_key=88d152960bc5347471fe0bb0965e6bf9&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate'
-
-    const CONFIG_URL = 'https://api.themoviedb.org/3/configuration?api_key=88d152960bc5347471fe0bb0965e6bf9'
 
     const getMovie = async () => {
         try {
-            const res = await fetch(API)
-            const movies = await res.json()
-            setMovies(movies.results)
+            const res = await movieApi.getMovie()
+            setMovies(res.data.results)
         } catch (e) {
             console.error(e)
         }
 
     }
 
+
     const getConfig = async () => {
         try {
-            const res = await fetch(CONFIG_URL)
-            const config = await res.json()
-            setConfig(config)
+            const res = await movieApi.getConfig()
+            setConfig(res.data)
         } catch (e) {
             console.error(e)
         }
@@ -42,9 +41,9 @@ export const MoviesList = () => {
     return (<div>
         <Filter filter={filter} setFilter={setFilter}/>
         <ul className={'movies-list'}>
-            {movies.filter((movie: {title: string}) =>
+            {movies.filter((movie: { title: string }) =>
                 movie.title.toLowerCase().includes(filter.toLowerCase())
-            ).map((movie: {poster_path: string, id: number}) =>
+            ).map((movie: { poster_path: string, id: number }) =>
                 <Movie key={movie.id} movie={movie} config={config}/>
             )}
         </ul>
