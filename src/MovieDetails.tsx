@@ -45,8 +45,12 @@ const MovieDetails = () => {
                             return <li>
                                 {genre.name}
                             </li>
+
                         })}
                     </ul>
+                  <div style={{display: "flex",
+                      justifyContent: 'flex-end',
+                      }}>release date: {movie.release_date}</div>
                 </div>
 
             </div>

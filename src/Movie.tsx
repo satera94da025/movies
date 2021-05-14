@@ -1,18 +1,25 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {movieType} from "./MoviesList";
+
+type PropsType = {
+    movie: movieType
+    config?: {
+        images: { base_url?: string }
+    }
+}
 
 
-
-// @ts-ignore
-export const Movie = ({movie, config}) => {
-    return (<li>
-        <Link to={`/movie/${movie.id}`}>
-            {config.images?.base_url &&
-            <img src={` ${config.images.base_url}w342${movie.poster_path} `} alt={`${movie.title}Poster`}/>}
+export const Movie = (props: PropsType) => {
+    return <li>
+        <Link to={`/movie/${props.movie.id}`}>
+            {props.config?.images?.base_url &&
+            <img src={` ${props.config.images.base_url}w342${props.movie.poster_path} `}
+                 alt={`${props.movie.title}Poster`}/>}
 
 
         </Link>
 
 
-    </li>)
+    </li>
 }

@@ -13,6 +13,9 @@ export const movieApi = {
     },
     getConfig() {
         return instance.get(`configuration${API_KEY}`)
+    },
+    getUpcoming() {
+        return instance.get(`movie/upcoming${API_KEY}&language=en-US&page=1`)
     }
 }
 
