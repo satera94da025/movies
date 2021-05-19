@@ -1,6 +1,6 @@
 import React from 'react';
 import {Movie} from "../Movie";
-import {movieType} from "../MoviesList";
+import {movieType, TaskStatuses} from "../MoviesList";
 
 type PropsType = {
     filter: string
@@ -9,6 +9,7 @@ type PropsType = {
     config?: {
         images: { base_url?: string }
     }
+    changeStatus: (movieId: number, status: TaskStatuses) => void
 }
 
 export const UpcomingMovie = (props: PropsType) => {
@@ -18,7 +19,7 @@ export const UpcomingMovie = (props: PropsType) => {
                 {props.upcomingMovies.filter((movie: { title: string }) =>
                     movie.title.toLowerCase().includes(props.filter.toLowerCase())
                 ).map((movie: movieType) =>
-                    <Movie key={movie.id} movie={movie} config={props.config}/>
+                    <Movie key={movie.id} movie={movie} config={props.config} changeStatus={props.changeStatus}/>
                 )}
             </ul>
         </div>

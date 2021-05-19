@@ -7,13 +7,20 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 
 
+
 export type movieType = {
     id: number
     poster_path: string
     title: string
-
+    status: TaskStatuses
 }
 
+export enum TaskStatuses {
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
 
 export const MoviesList = () => {
 
@@ -23,6 +30,17 @@ export const MoviesList = () => {
     const [upcomingMovies, setUpcomingMovies] = useState<Array<movieType>>([])
     const [showBase, setShowBase] = useState(true)
 
+    const showFavourites = () => {
+        setMovies([...movies.filter(m => m.status === TaskStatuses.Completed )])
+    }
+
+    const changeStatus = (movieId: number, status: TaskStatuses) => {
+        let movie = movies.find(m => m.id === movieId)
+        if(movie){
+            movie.status = status
+        }
+        setMovies([...movies])
+    }
 
     const getUpcoming = async () => {
         try {
@@ -66,11 +84,12 @@ export const MoviesList = () => {
         <ButtonGroup disableElevation variant="contained" color="secondary">
             <Button onClick={() => setShowBase(true)}>Base</Button>
             <Button onClick={() => setShowBase(false)}>Upcoming</Button>
+            <Button onClick={showFavourites}>showFavourites</Button>
         </ButtonGroup>
         <Filter filter={filter} setFilter={setFilter}/>
-        {showBase && <BaseMovie filter={filter} setFilter={setFilter} config={config} movies={movies}/>}
+        {showBase && <BaseMovie filter={filter} setFilter={setFilter} config={config} movies={movies} changeStatus={changeStatus}/>}
         {!showBase &&
-        <UpcomingMovie upcomingMovies={upcomingMovies} filter={filter} setFilter={setFilter} config={config}/>}
+        <UpcomingMovie upcomingMovies={upcomingMovies} filter={filter} setFilter={setFilter} config={config} changeStatus={changeStatus}/>}
     </div>)
 }
 
