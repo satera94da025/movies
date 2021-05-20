@@ -5,6 +5,8 @@ import {BaseMovie} from "./sortMovie/baseMovie";
 import {Filter} from "./Filter";
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
+import CircularIndeterminate from "./materialUI/preloader";
+
 
 
 
@@ -29,6 +31,7 @@ export const MoviesList = () => {
     const [config, setConfig] = useState<any>({})
     const [upcomingMovies, setUpcomingMovies] = useState<Array<movieType>>([])
     const [showBase, setShowBase] = useState(true)
+    const [preloader, setPreloader] = useState(true)
 
     const showFavourites = () => {
         setMovies([...movies.filter(m => m.status === TaskStatuses.Completed )])
@@ -44,8 +47,10 @@ export const MoviesList = () => {
 
     const getUpcoming = async () => {
         try {
+            setPreloader(true)
             const res = await movieApi.getUpcoming()
             setUpcomingMovies(res.data.results)
+            setPreloader(false)
         } catch (e) {
             console.error(e)
         }
@@ -54,8 +59,10 @@ export const MoviesList = () => {
 
     const getMovie = async () => {
         try {
+            setPreloader(true)
             const res = await movieApi.getMovie()
             setMovies(res.data.results)
+            setPreloader(false)
         } catch (e) {
             console.error(e)
         }
@@ -63,8 +70,10 @@ export const MoviesList = () => {
 
     const getConfig = async () => {
         try {
+            setPreloader(true)
             const res = await movieApi.getConfig()
             setConfig(res.data)
+            setPreloader(false)
         } catch (e) {
             console.error(e)
         }
@@ -87,6 +96,7 @@ export const MoviesList = () => {
             <Button onClick={showFavourites}>showFavourites</Button>
         </ButtonGroup>
         <Filter filter={filter} setFilter={setFilter}/>
+        {preloader && <CircularIndeterminate/> }
         {showBase && <BaseMovie filter={filter} setFilter={setFilter} config={config} movies={movies} changeStatus={changeStatus}/>}
         {!showBase &&
         <UpcomingMovie upcomingMovies={upcomingMovies} filter={filter} setFilter={setFilter} config={config} changeStatus={changeStatus}/>}
